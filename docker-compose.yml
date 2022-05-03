@@ -28,6 +28,22 @@ services:
         ipv4_address: 172.21.220.20
     depends_on:
       - postgresdb
+    
+  flaskapp:
+    container_name: flask_container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "${FLASK_PORT:-8081}:5000"
+    volumes:
+       - ./app:/usr/src/app
+    networks:
+      postgres_net:
+        ipv4_address: 172.21.220.30
+    depends_on:
+      - postgresdb
+      - pgadmin
 
 networks:
   postgres_net:
