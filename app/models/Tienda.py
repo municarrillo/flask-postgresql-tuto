@@ -5,8 +5,9 @@ class Tienda():
     __connection = any
 
     def __init__(self):
-        self.__connection = self.__repository.return_connection()
+        self.__connection = self.__repository.get_connection()
 
     def test_connection(self):
         if (self.__connection is not None):
             print(self.__connection)
+            self.__repository.close_conexion()
