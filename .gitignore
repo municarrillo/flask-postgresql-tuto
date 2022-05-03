@@ -1,3 +1,5 @@
 env/
 __pycache__/
 postgresdb_volume/
+flask_config.cfg
+db_config.ini

@@ -1,13 +1,12 @@
-from ..connections.RepositorioPostgres import Postgres
-
 class Tienda():
-    __repository = Postgres()
-    __connection = any
 
-    def __init__(self):
-        self.__connection = self.__repository.get_connection()
+    __connection = None
 
-    def test_connection(self):
-        if (self.__connection is not None):
-            print(self.__connection)
-            self.__repository.close_conexion()
+    def __init__(self, connection):
+        print("Nueva tienda")
+        self.__connection = connection
+
+    def is_connection_available(self):
+        if self.__connection is not None:
+            return True
+        return False

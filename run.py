@@ -1,4 +1,5 @@
-from app import tienda
+from app import create_connections, close_connections, get_flask_server
 
 if __name__ == '__main__':
-    tienda.test_connection()
+    app = get_flask_server()
+    app.run()
