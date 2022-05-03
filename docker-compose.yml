@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+  postgresdb:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+       - ./postgresdb_volume:/data/postgres
+    ports:
+      - "${POSGRESQL_PORT:-5433}:5432"
+    networks:
+      postgres_net:
+        ipv4_address: 172.21.220.10
+  
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-8080}:80"
+    networks:
+      postgres_net:
+        ipv4_address: 172.21.220.20
+    depends_on:
+      - postgresdb
+
+networks:
+  postgres_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config: 
+      - 
+        subnet: 172.21.220.0/24
+
+volumes:
+  postgresdb_volume:
