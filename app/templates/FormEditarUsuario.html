@@ -10,18 +10,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
 </head>
 <body>
-    <h1>Registro de usuarios</h1>
-    <p id="mensaje"></p>
-
     <div class="container">
         <div class="col-6">
-            <form class="form">
-
+            
+            <div class="form">
+                <h2>Búsqueda de usuario</h2>
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
+                    <label for="user_id" class="form-label">ID de usuario:</label>
+                    <input type="number" class="form-control" id="user_id" placeholder="Escribir ID...">
+                </div>
+                <button type="button" class="btn btn-warning" onclick="buscar_usuario()">Buscar</button>
+            </div>
+            <hr>
+            <hr>
+            
+            <h2>Edición de usuario</h2>
+            <form class="form">
+                <div class="mb-3">
+                    <label for="user_id" class="form-label">Nombre</label>
                     <input type="text" class="form-control" id="nombre" placeholder="Escribir...">
                 </div>
-        
+
                 <div class="mb-3">
                     <label for="fecha-nacimiento" class="form-label">Fecha Nacimiento</label>
                     <input type="date" class="form-control" id="fecha-nacimiento" placeholder="Escribir...">
@@ -31,7 +40,7 @@
                     <label for="apellidos" class="form-label">Apellidos</label>
                     <input type="text" class="form-control" id="apellidos" placeholder="Escribir...">
                 </div>
-        
+
                 <button type="button" class="btn btn-success" onclick="guardar_informacion()">Guardar</button>
             </form>
         </div>
@@ -40,14 +49,15 @@
     <script type="text/javascript">
         function guardar_informacion() {
 
-            const URL  = `/usuarios/save`;
+            const URL  = `/usuarios/actualizar`;
             const DATA = {
-                nombre:           document.getElementById('nombre').value, 
+                id:               document.getElementById('user_id').value,
+                nombre:           document.getElementById('nombre').value,
                 fecha_nacimiento: document.getElementById('fecha-nacimiento').value,
                 apellidos:        document.getElementById('apellidos').value,
             }
 
-            axios.post(URL, DATA).then((response) => {
+            axios.put(URL, DATA).then((response) => {
                 document.getElementById('nombre').value           = ''
                 document.getElementById('fecha-nacimiento').value = ''
                 document.getElementById('apellidos').value        = ''
@@ -57,6 +67,28 @@
 
             }).catch((error) => {
                 console.error(`Inténtelo más tarde. Error: ${error.response.status}`);
+            });
+        }
+
+        function buscar_usuario() {
+            user_id   = document.getElementById('user_id').value;
+            if (!user_id || user_id == ' ' || user_id <= 0)  {
+                return false
+            }
+            const URL = `/usuarios/buscar?id=${user_id}`;
+
+            axios.get(URL).then((response) => {
+                const fecha = new Date(Date.parse(response.data.fecha_nacimiento)).toISOString().substring(0,10);
+
+                document.getElementById('nombre').value           = response.data.nombre;
+                document.getElementById('fecha-nacimiento').value = fecha;
+                document.getElementById('apellidos').value        = response.data.apellidos;
+
+                alert('¡Usuario encontrado!');
+
+            }).catch((error) => {
+                alert('¡Usuario NO encontrado!')
+                console.error(`Inténtelo más tarde. Error: ${error}`);
             });
         }
 

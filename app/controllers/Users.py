@@ -44,4 +44,8 @@ def __buscar_usuario() -> str:
 
 @usuarios.route("/usuarios/registrar", methods=["GET"])
 def __formulario_registro():
-    return render_template('FormUsuarios.html')
+    return render_template('FormRegistrarUsuario.html')
+
+@usuarios.route("/usuarios/editar", methods=["GET"])
+def __formulario_edicion():
+    return render_template('FormEditarUsuario.html')
