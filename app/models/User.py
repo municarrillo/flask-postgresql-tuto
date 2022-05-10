@@ -56,12 +56,12 @@ class User():
         connection = postgres_repository.get_connection()
         data = connection.execute('SELECT id, nombre, apellidos, fecha_nacimiento FROM "Usuarios"').fetchall()
         postgres_repository.close_connection()
-    
+
         response = {}
         index = 1
         for usuario in data:
-            response[str(index)] = { 'id' : usuario[0], 'nombre' : usuario[1], 'fecha_nacimiento' : usuario[2], 'apellidos' : usuario[3] }
-            index += 1    
+            response[str(index)] = { 'id' : usuario[0], 'nombre' : usuario[1], 'apellidos' : usuario[2], 'fecha_nacimiento' : usuario[3] }
+            index += 1
         return response
 
 

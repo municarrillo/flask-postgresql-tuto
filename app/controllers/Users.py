@@ -1,3 +1,4 @@
+from array import array
 from app.models.User import User
 from pathlib import Path
 from flask import Blueprint, render_template, request
@@ -29,6 +30,11 @@ def __edit_usuario() -> str:
     return str('{"message": "%s"}' % message)
 
 
+@usuarios.route("/usuarios/mostrar", methods=["GET"])
+def __mostrar_usuarios() -> str:
+    return render_template('Usuarios.html')
+
+
 @usuarios.route("/usuarios", methods=["GET"])
 def __get_usuarios() -> str:
     resp = User.obtener_usuarios()
@@ -45,6 +51,7 @@ def __buscar_usuario() -> str:
 @usuarios.route("/usuarios/registrar", methods=["GET"])
 def __formulario_registro():
     return render_template('FormRegistrarUsuario.html')
+
 
 @usuarios.route("/usuarios/editar", methods=["GET"])
 def __formulario_edicion():
