@@ -1,2 +1,2 @@
-./postgresdb_volume
-./env
+./postgresdb_volume/
+./env/
